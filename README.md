@@ -12,29 +12,30 @@ Usage
 
 This class must be called by the functions.php file of the theme.
 
-Usual structure of files :
+### Usual structure of files :
 
-themes/my-theme/
-themes/my-theme/css/
-themes/my-theme/inc/
-themes/my-theme/inc/style.php
-themes/my-theme/inc/lib/lessc.inc.php
+	themes/my-theme/
+	themes/my-theme/css/
+	themes/my-theme/inc/
+	themes/my-theme/inc/style.php
+	themes/my-theme/inc/lib/lessc.inc.php
 
-Usage :
+### Usage :
 
-// Declare less for style
-new Less_Theme_Generator( array(
-		'/css/ressources/reset.less',
-		'/css/ressources/text.less',
-		'/css/ressources/forms.less',
-		'/css/ressources/img.less',
-		'/css/ressources/superfish.less',
-		'/css/ressources/elements.less',
-		'/css/ressources/grid.less',
-		'/css/master.less'
-	), TEMPLATEPATH, get_bloginfo('template_directory'), false, false );
+	// Declare less for style
+	new Less_Theme_Generator( array(
+			'/css/ressources/reset.less',
+			'/css/ressources/text.less',
+			'/css/ressources/forms.less',
+			'/css/ressources/img.less',
+			'/css/ressources/superfish.less',
+			'/css/ressources/elements.less',
+			'/css/ressources/grid.less',
+			'/css/master.less'
+		), TEMPLATEPATH, get_bloginfo('template_directory'), false, false );
+
 	
-Parameters :
+### Parameters :
 
 1. Array with ressourcess LESS to compile
 2. Path to theme
