@@ -5,6 +5,7 @@ class Less_Theme_Generator {
 	private $debug = false;
 	
 	// Files path
+	private $folder_name_cache = 'cache';
 	private $path_style = '';
 	private $path_cache = '';
 	
@@ -17,9 +18,10 @@ class Less_Theme_Generator {
 	/**
 	 * Constructor
 	 */
-	function __construct( $ressources = array(), $path_style = '', $url_style = '', $compression = true, $debug = false ) {
+	function __construct( $ressources = array(), $path_style = '', $url_style = '', $compression = true, $debug = false, $folder_name_cache = 'cache' ) {
 		// Dynamic var class
-		$this->path_cache = WP_CONTENT_DIR.'/cache';
+		$this->folder_name_cache = $folder_name_cache;
+		$this->path_cache = WP_CONTENT_DIR.DIRECTORY_SEPARATOR.$this->folder_name_cache;
 		
 		// Params
 		$this->ressources 	= (array) $ressources;
@@ -62,7 +64,7 @@ class Less_Theme_Generator {
 			
 			// File exist ? Enqueue ? Otherwise put inline
 			if ( is_file($new_file) && $this->debug == false )
-				wp_enqueue_style( 'theme-style', WP_CONTENT_URL . '/cache/theme-style-'.$wpdb->blogid.'-'.$file_date.'.css', array(), filemtime(WP_CONTENT_DIR . '/cache/theme-style-'.$wpdb->blogid.'-'.$file_date.'.css'), 'all' );
+				wp_enqueue_style( 'theme-style', WP_CONTENT_URL . '/'.$this->folder_name_cache.'/theme-style-'.$wpdb->blogid.'-'.$file_date.'.css', array(), filemtime(WP_CONTENT_DIR . '/'.$this->folder_name_cache.'/theme-style-'.$wpdb->blogid.'-'.$file_date.'.css'), 'all' );
 			else
 				add_action( 'wp_head', array(&$this, 'styleInline') );
 		} else {
@@ -131,7 +133,7 @@ class Less_Theme_Generator {
 		$result = file_put_contents( $new_file, $this->getCssFromLess() );
 		if ( $result != false ) {
 			// Delete old file
-			if ( is_file($old_file) ) {
+			if ( is_file($old_file) && $db_date != $file_date ) {
 				@unlink($old_file);
 			}
 			
@@ -150,6 +152,10 @@ class Less_Theme_Generator {
 		// Folder cache exist ?
 		if ( !is_dir($this->path_cache) )
 			mkdir( $this->path_cache, 0777, true );
+		
+		// Try to update chmod
+		if ( !is_writable($this->path_cache) )
+			chmod( $this->path_cache, 0777 );
 		
 		return is_writable( $this->path_cache );
 	}
