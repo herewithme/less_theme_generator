@@ -129,6 +129,8 @@ class Less_Theme_Generator {
 	 * Create CSS static file
 	 */
 	function refreshCache( $old_file = '', $new_file = '', $db_date = 0, $file_date = 0 ) {
+		global $cache_path;
+		
 		// Write on new file
 		$result = file_put_contents( $new_file, $this->getCssFromLess() );
 		if ( $result != false ) {
@@ -139,6 +141,11 @@ class Less_Theme_Generator {
 			
 			// Save new time
 			set_theme_mod( 'last-modification', $file_date );
+			
+			// Try to clean WP Super Cache when Less changed and cache is recompile
+			if ( function_exists( 'prune_super_cache' ) )
+				prune_super_cache( $cache_path, true );
+			
 			return $file_date;
 		}
 		
