@@ -145,8 +145,7 @@ class Less_Theme_Generator {
 			// Try to clean WP Super Cache when Less changed and cache is recompile
 			if ( function_exists('prune_super_cache') ) {
 				prune_super_cache( $cache_path, true );
-			}
-				
+			}	
 			
 			// Try to clean Hyper Cache when Less changed and cache is recompile
 			if ( function_exists('hyper_delete_path') ) {
