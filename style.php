@@ -143,8 +143,15 @@ class Less_Theme_Generator {
 			set_theme_mod( 'last-modification', $file_date );
 			
 			// Try to clean WP Super Cache when Less changed and cache is recompile
-			if ( function_exists( 'prune_super_cache' ) )
+			if ( function_exists('prune_super_cache') ) {
 				prune_super_cache( $cache_path, true );
+			}
+				
+			
+			// Try to clean Hyper Cache when Less changed and cache is recompile
+			if ( function_exists('hyper_delete_path') ) {
+				hyper_delete_path(WP_CONTENT_DIR . '/cache/hyper-cache');
+			}
 			
 			return $file_date;
 		}
