@@ -35,9 +35,21 @@ class Less_Theme_Generator {
 			add_action( 'template_redirect', array(&$this, 'execute'), 1 ); // Load it before plugin that want redirect/kill wp process
 		
 		// This gets the theme name from the stylesheet (lowercase and without spaces)
-		$themename = get_theme_data(STYLESHEETPATH . '/style.css');
-		$themename = preg_replace("/\W/", "", strtolower($themename['Name']) );
+		if( !function_exists( 'wp_get_theme' ) ) { // For WordPress not in 3.4 version
+			// Get the theme data
+			$theme = get_theme_data( STYLESHEETPATH . '/style.css' );
+			
+			// Get theme name
+			$themename = $theme['Name'];
+		} else { // 3.4 Sites
+			// 3.4 WP_Theme Object
+			$theme = wp_get_theme();
+			
+			// Get theme name
+			$themename = $theme->get( 'Name' );
+		}
 		
+		$themename = preg_replace("/\W/", "", strtolower($themename) );
 		add_action( 'update_option_' . $themename, array(&$this, 'flushCache') );
 	}
 	
