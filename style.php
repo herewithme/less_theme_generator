@@ -22,7 +22,7 @@ class Less_Theme_Generator {
 		// Dynamic var class
 		$this->folder_name_cache = $folder_name_cache;
 		$this->path_cache = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . $this->folder_name_cache;
-
+		
 		// Params
 		$this->ressources = (array)$ressources;
 		$this->path_style = empty( $path_style ) ? TEMPLATEPATH : $path_style;
@@ -160,6 +160,9 @@ class Less_Theme_Generator {
 			if( is_file( $old_file ) && $db_date != $file_date ) {
 				@unlink( $old_file );
 			}
+			
+			// Cleanup cache stat
+			clearstatcache();
 
 			// Save new time
 			set_theme_mod( 'last-modification', $file_date );
@@ -191,7 +194,10 @@ class Less_Theme_Generator {
 		// Try to update chmod
 		if( !is_writable( $this->path_cache ) )
 			chmod( $this->path_cache, 0777 );
-
+		
+		// Cleanup cache stat
+		clearstatcache();
+		
 		return is_writable( $this->path_cache );
 	}
 
@@ -206,8 +212,11 @@ class Less_Theme_Generator {
 		// Cache file exist ?
 		if( is_file( $this->path_cache . '/theme-style-' . $wpdb->blogid . '-' . $db_date . '.css' ) ) {
 			@unlink( $this->path_cache . '/theme-style-' . $wpdb->blogid . '-' . $db_date . '.css' );
+			
+			// Cleanup cache stat
+			clearstatcache();
 		}
-
+		
 		remove_theme_mod( 'last-modification' );
 	}
 
