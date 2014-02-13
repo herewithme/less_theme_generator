@@ -32,7 +32,7 @@ class Less_Theme_Generator {
 
 		// Wait init for play with CSS/JS
 		if( !is_admin( ) )
-			add_action( 'template_redirect', array( &$this, 'execute' ), 1 );
+			add_action( 'template_redirect', array( $this, 'execute' ), 1 );
 		// Load it before plugin that want redirect/kill wp process
 
 		// This gets the theme name from the stylesheet (lowercase and without spaces)
@@ -51,7 +51,7 @@ class Less_Theme_Generator {
 		}
 
 		$themename = preg_replace( "/\W/", "", strtolower( $themename ) );
-		add_action( 'update_option_' . $themename, array( &$this, 'flushCache' ) );
+		add_action( 'update_option_' . $themename, array( $this, 'flushCache' ) );
 	}
 
 	/**
@@ -79,9 +79,9 @@ class Less_Theme_Generator {
 			if( is_file( $new_file ) && $this->debug == false )
 				wp_enqueue_style( 'theme-style', WP_CONTENT_URL . '/' . $this->folder_name_cache . '/theme-style-' . $wpdb->blogid . '-' . $file_date . '.css', array( ), filemtime( WP_CONTENT_DIR . '/' . $this->folder_name_cache . '/theme-style-' . $wpdb->blogid . '-' . $file_date . '.css' ), 'all' );
 			else
-				add_action( 'wp_head', array( &$this, 'styleInline' ) );
+				add_action( 'wp_head', array( $this, 'styleInline' ) );
 		} else {
-			add_action( 'wp_head', array( &$this, 'styleInline' ) );
+			add_action( 'wp_head', array( $this, 'styleInline' ) );
 		}
 	}
 
@@ -131,7 +131,7 @@ class Less_Theme_Generator {
 		// Build CSS
 		$less = new lessc( );
 		
-		do_action_ref_array('before-less-compile', array(&$less));
+		do_action_ref_array('before-less-compile', array($less));
 		
 		if( $this->compression === true ) {
 			$less->setFormatter("compressed");
